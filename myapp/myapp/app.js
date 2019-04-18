@@ -9,6 +9,33 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+//simple console, Color console, set output level
+var logger = require('tracer').console();
+logger.log('hello');
+logger.trace('hello', 'world');
+logger.debug('hello %s',  'world', 123);
+logger.info('hello %s %d',  'world', 123, {foo:'bar'});
+logger.warn('hello %s %d %j', 'world', 123, {foo:'bar'});
+logger.error('hello %s %d %j', 'world', 123, {foo:'bar'}, [1, 2, 3, 4], Object);
+
+
+var logger = require('tracer').colorConsole();
+logger.log('hello');
+logger.trace('hello', 'world');
+logger.debug('hello %s',  'world', 123);
+logger.info('hello %s %d',  'world', 123, {foo:'bar'});
+logger.warn('hello %s %d %j', 'world', 123, {foo:'bar'});
+logger.error('hello %s %d %j', 'world', 123, {foo:'bar'}, [1, 2, 3, 4], Object);
+
+var logger = require('tracer').colorConsole({level:'warn'});
+logger.log('hello');
+logger.trace('hello', 'world');
+logger.debug('hello %s',  'world', 123);
+logger.info('hello %s %d',  'world', 123, {foo:'bar'});
+logger.warn('hello %s %d %j', 'world', 123, {foo:'bar'});
+logger.error('hello %s %d %j', 'world', 123, {foo:'bar'}, [1, 2, 3, 4], Object);
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
