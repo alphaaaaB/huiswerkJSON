@@ -5,19 +5,12 @@ var bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
 const port = 3000
+const database = require('./src/database')
 
 app.get('/',(req, res) => {
-  const result = {
-    name : "poepstront",
-    year : 2000,
-    description : "poep met stront",
-    acteurs : [{
-      name : "Tom Cruise"
-    },{
-      name : "stronthoofd Cruise"
-    }]
-  }
-  res.status(200).json(result)
+  // res.status(200).json(result)
+  //laat alle movies zien uit de database
+  res.status(200).json({results: database.movies})
 })
 
 app.post('/movies', function (req, res) {
@@ -26,6 +19,9 @@ app.post('/movies', function (req, res) {
   
     const movie = req.body
     console.log('req.body == ' + movie)
+
+    database.movies.push(movie)
+
     res.status(200).json()
   })
 
