@@ -1,11 +1,32 @@
 const express = require('express')
 const app = express()
+
+var bodyParser = require('body-parser')
+app.use(bodyParser.json())
+
 const port = 3000
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/',(req, res) => {
+  const result = {
+    name : "poepstront",
+    year : 2000,
+    description : "poep met stront",
+    acteurs : [{
+      name : "Tom Cruise"
+    },{
+      name : "stronthoofd Cruise"
+    }]
+  }
+  res.status(200).json(result)
+})
 
-app.post('/', function (req, res) {
+app.post('/movies', function (req, res) {
+  //doe iets met input van het request. Verzoek bevat altijd request.
     res.send('Got a POST request')
+  
+    const movie = req.body
+    console.log('req.body == ' + movie)
+    res.status(200).json()
   })
 
   app.put('/user', function (req, res) {
