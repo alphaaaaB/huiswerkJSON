@@ -1,28 +1,31 @@
 const express = require('express')
-const app = express()
-
 var bodyParser = require('body-parser')
+
+const movieRoutes = require('./src/Routes/movie.route')
+
+const app = express()
+const port = 3000
 app.use(bodyParser.json())
 
-const port = 3000
-const database = require('./src/database')
-
-app.get('/',(req, res) => {
-  // res.status(200).json(result)
-  //laat alle movies zien uit de database
-  res.status(200).json({results: database.movies})
+app.all("*", (req, res, next) => {
+  console.log("Generic handler")
+  next()
 })
 
-app.post('/movies', function (req, res) {
-  //doe iets met input van het request. Verzoek bevat altijd request.
-    res.send('Got a POST request')
-  
-    const movie = req.body
-    console.log('req.body == ' + movie)
+app.use("/api", movieRoutes)
 
-    database.movies.push(movie)
-
-    res.status(200).json()
+  app.all("*", (req, res, next) => {
+    console.log('Endpoint bestaat niet')
+    const errorObject = {
+      message : "Endpoint not found",
+      code : 404
+    }
+    next(errorObject)
+  })
+  //Handle 404 errors
+  app.use((error, req, res, next) => {
+    console.log("Error handler aangeroepen", error.message)
+    res.status(500).json(error)
   })
 
   app.put('/user', function (req, res) {
@@ -33,10 +36,6 @@ app.post('/movies', function (req, res) {
     res.send('Got a DELETE request at /user')
   })
 
-  //Handle 404 errors
-  app.use(function (req, res, next) {
-    res.status(404).send("Sorry can't find that!")
-  })
 
 
 
@@ -48,3 +47,4 @@ app.post('/movies', function (req, res) {
     res.status(500).send('Something broke!')
   })
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
